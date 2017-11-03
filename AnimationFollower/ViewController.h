@@ -10,6 +10,11 @@
 
 @interface ViewController : UIViewController
 
+@property NSArray *nameArray;
+@property NSArray *timeArray;
+@property NSArray *numberArray;
+@property NSArray *countryArray;
+@property NSArray *introductionArray;
 
 @end
 

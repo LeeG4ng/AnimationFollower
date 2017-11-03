@@ -12,6 +12,8 @@
 
 @interface ViewController ()<UITableViewDelegate,UITableViewDataSource>
 
+@property UITableView *tableView;
+
 @end
 
 @implementation ViewController
@@ -19,20 +21,34 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 20, self.view.frame.size.width, self.view.frame.size.height-20) style:UITableViewStyleGrouped];
-    tableView.delegate = self;
-    tableView.dataSource = self;
-    [tableView reloadData];
-    [self.view addSubview:tableView];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 20, self.view.frame.size.width, self.view.frame.size.height-20) style:UITableViewStyleGrouped];
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
+    [self.view addSubview:_tableView];
     
     self.navigationItem.title = @"番剧";
     UIBarButtonItem *tableBtn = [[UIBarButtonItem alloc] initWithTitle:@"追番" style:UIBarButtonItemStylePlain target:self action:@selector(doClickTableBtn)];
     self.navigationItem.rightBarButtonItem = tableBtn;
+//    [self clearAllUserDefaultsData];
 }
+//- (void)clearAllUserDefaultsData//清空NSUserDefaults
+//{
+//
+//    NSString *appDomain = [[NSBundle mainBundle] bundleIdentifier];
+//    [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:appDomain];
+//
+//
+//}
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-
+    _nameArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"name"];
+    _timeArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"time"];
+    _numberArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"number"];
+    _countryArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"country"];
+    _introductionArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"introduction"];
+    
+    [_tableView reloadData];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -40,17 +56,22 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 3;
+    return [_nameArray count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSString *cellID = @"cellID";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:cellID];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellID];
     }
-    cell.textLabel.text = [NSString stringWithFormat:@"第%ld个cell", (long)indexPath.row];
-    cell.detailTextLabel.text = @"副标题";
+    cell.textLabel.text = [_nameArray objectAtIndex:(int)indexPath.row];
+//    NSString *time = [[NSString alloc] init];
+//    time = [_timeArray objectAtIndex:(int)indexPath.row];
+//    NSString *number = [_numberArray objectAtIndex:(int)indexPath.row];
+//    NSString *subtitle = [NSString stringWithFormat:@"%@ %@",time,number];
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"上映时间：%@ 集数：%@",[_timeArray objectAtIndex:(int)indexPath.row],[_numberArray objectAtIndex:(int)indexPath.row]];
+//    NSLog(@"%@", time);
     return cell;
 }
 

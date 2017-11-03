@@ -10,6 +10,13 @@
 
 @interface AddViewController ()
 
+@property UITextField *name;
+@property UITextField *time;
+@property UITextField *number;
+@property UITextField *country;
+@property UITextField *introduction;
+
+
 @end
 
 @implementation AddViewController
@@ -21,40 +28,40 @@
     self.navigationItem.title = @"新增番剧";
     self.navigationItem.rightBarButtonItem = saveBtn;
     
-    UITextField *name = [[UITextField alloc] initWithFrame:CGRectMake(0, 100, self.view.bounds.size.width, 50)];
-    [self.view addSubview:name];
-    name.enabled = YES;
-    name.borderStyle = UITextBorderStyleRoundedRect;
-    name.placeholder = @"番剧名";
-    name.clearButtonMode = UITextFieldViewModeWhileEditing;
+    self.name = [[UITextField alloc] initWithFrame:CGRectMake(0, 95, self.view.bounds.size.width, 45)];
+    [self.view addSubview:_name];
+    _name.enabled = YES;
+    _name.borderStyle = UITextBorderStyleRoundedRect;
+    _name.placeholder = @"番剧名";
+    _name.clearButtonMode = UITextFieldViewModeWhileEditing;
     
-    UITextField *time = [[UITextField alloc] initWithFrame:CGRectMake(0, 170, self.view.bounds.size.width, 50)];
-    [self.view addSubview:time];
-    time.enabled = YES;
-    time.borderStyle = UITextBorderStyleRoundedRect;
-    time.placeholder = @"上映时间";
-    time.clearButtonMode = UITextFieldViewModeWhileEditing;
+    self.time = [[UITextField alloc] initWithFrame:CGRectMake(0, 165, self.view.bounds.size.width, 45)];
+    [self.view addSubview:_time];
+    _time.enabled = YES;
+    _time.borderStyle = UITextBorderStyleRoundedRect;
+    _time.placeholder = @"上映时间";
+    _time.clearButtonMode = UITextFieldViewModeWhileEditing;
     
-    UITextField *number = [[UITextField alloc] initWithFrame:CGRectMake(0, 240, self.view.bounds.size.width, 50)];
-    [self.view addSubview:number];
-    number.enabled = YES;
-    number.borderStyle = UITextBorderStyleRoundedRect;
-    number.placeholder = @"集数";
-    number.clearButtonMode = UITextFieldViewModeWhileEditing;
+    self.number = [[UITextField alloc] initWithFrame:CGRectMake(0, 235, self.view.bounds.size.width, 45)];
+    [self.view addSubview:_number];
+    _number.enabled = YES;
+    _number.borderStyle = UITextBorderStyleRoundedRect;
+    _number.placeholder = @"集数";
+    _number.clearButtonMode = UITextFieldViewModeWhileEditing;
     
-    UITextField *country = [[UITextField alloc] initWithFrame:CGRectMake(0, 310, self.view.bounds.size.width, 50)];
-    [self.view addSubview:country];
-    country.enabled = YES;
-    country.borderStyle = UITextBorderStyleRoundedRect;
-    country.placeholder = @"国家";
-    country.clearButtonMode = UITextFieldViewModeWhileEditing;
+    self.country = [[UITextField alloc] initWithFrame:CGRectMake(0, 305, self.view.bounds.size.width, 45)];
+    [self.view addSubview:_country];
+    _country.enabled = YES;
+    _country.borderStyle = UITextBorderStyleRoundedRect;
+    _country.placeholder = @"国家";
+    _country.clearButtonMode = UITextFieldViewModeWhileEditing;
     
-    UITextField *introduction = [[UITextField alloc] initWithFrame:CGRectMake(0, 380, self.view.bounds.size.width, 50)];
-    [self.view addSubview:introduction];
-    introduction.enabled = YES;
-    introduction.borderStyle = UITextBorderStyleRoundedRect;
-    introduction.placeholder = @"简介";
-    introduction.clearButtonMode = UITextFieldViewModeWhileEditing;
+    self.introduction = [[UITextField alloc] initWithFrame:CGRectMake(0, 375, self.view.bounds.size.width, 45)];
+    [self.view addSubview:_introduction];
+    _introduction.enabled = YES;
+    _introduction.borderStyle = UITextBorderStyleRoundedRect;
+    _introduction.placeholder = @"简介";
+    _introduction.clearButtonMode = UITextFieldViewModeWhileEditing;
     
 }
 
@@ -64,7 +71,62 @@
 }
 
 - (void)didClickSave {
+    //name
+    NSMutableArray *initNameArray = [[NSMutableArray alloc] init];
+    if([[NSUserDefaults standardUserDefaults] objectForKey:@"name"] == nil) {
+        [[NSUserDefaults standardUserDefaults] setObject:initNameArray forKey:@"name"];
+    }
+    NSArray *preNameArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"name"];
+    NSMutableArray *nameArray = [[NSMutableArray alloc] initWithArray:preNameArray];
+    [nameArray addObject:_name.text];
+    NSArray *newNameArray = [[NSArray alloc] initWithArray:nameArray];
+    [[NSUserDefaults standardUserDefaults] setObject:newNameArray forKey:@"name"];
     
+    //time
+    NSMutableArray *initTimeArray = [[NSMutableArray alloc] init];
+    if([[NSUserDefaults standardUserDefaults] objectForKey:@"time"] == nil) {
+        [[NSUserDefaults standardUserDefaults] setObject:initTimeArray forKey:@"time"];
+    }
+    NSArray *preTimeArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"time"];
+    NSMutableArray *timeArray = [[NSMutableArray alloc] initWithArray:preTimeArray];
+    [timeArray addObject:_time.text];
+    NSArray *newTimeArray = [[NSArray alloc] initWithArray:timeArray];
+    [[NSUserDefaults standardUserDefaults] setObject:newTimeArray forKey:@"time"];
+    
+    //number
+    NSMutableArray *initNumberArray = [[NSMutableArray alloc] init];
+    if([[NSUserDefaults standardUserDefaults] objectForKey:@"number"] == nil) {
+        [[NSUserDefaults standardUserDefaults] setObject:initNumberArray forKey:@"number"];
+    }
+    NSArray *preNumberArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"number"];
+    NSMutableArray *numberArray = [[NSMutableArray alloc] initWithArray:preNumberArray];
+    [numberArray addObject:_number.text];
+    NSArray *newNumberArray = [[NSArray alloc] initWithArray:numberArray];
+    [[NSUserDefaults standardUserDefaults] setObject:newNumberArray forKey:@"number"];
+    
+    //country
+    NSMutableArray *initCountryArray = [[NSMutableArray alloc] init];
+    if([[NSUserDefaults standardUserDefaults] objectForKey:@"country"] == nil) {
+        [[NSUserDefaults standardUserDefaults] setObject:initCountryArray forKey:@"country"];
+    }
+    NSArray *preCountryArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"country"];
+    NSMutableArray *countryArray = [[NSMutableArray alloc] initWithArray:preCountryArray];
+    [countryArray addObject:_country.text];
+    NSArray *newCountryArray = [[NSArray alloc] initWithArray:countryArray];
+    [[NSUserDefaults standardUserDefaults] setObject:newCountryArray forKey:@"country"];
+    
+    //introduction
+    NSMutableArray *initIntroductionArray = [[NSMutableArray alloc] init];
+    if([[NSUserDefaults standardUserDefaults] objectForKey:@"introduction"] == nil) {
+        [[NSUserDefaults standardUserDefaults] setObject:initIntroductionArray forKey:@"introduction"];
+    }
+    NSArray *preIntroductionArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"introduction"];
+    NSMutableArray *introductionArray = [[NSMutableArray alloc] initWithArray:preIntroductionArray];
+    [introductionArray addObject:_introduction.text];
+    NSArray *newIntroductionArray = [[NSArray alloc] initWithArray:introductionArray];
+    [[NSUserDefaults standardUserDefaults] setObject:newIntroductionArray forKey:@"introduction"];
+    
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 /*
