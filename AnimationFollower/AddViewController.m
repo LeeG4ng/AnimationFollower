@@ -71,62 +71,70 @@
 }
 
 - (void)didClickSave {
-    //name
-    NSMutableArray *initNameArray = [[NSMutableArray alloc] init];
-    if([[NSUserDefaults standardUserDefaults] objectForKey:@"name"] == nil) {
-        [[NSUserDefaults standardUserDefaults] setObject:initNameArray forKey:@"name"];
+    if([_name.text  isEqual: @""]||[_time.text  isEqual: @""]||[_number.text  isEqual: @""]||[_country.text  isEqual: @""]||[_introduction.text  isEqual: @""]) {
+        UIAlertController *omitAlert = [UIAlertController alertControllerWithTitle:@"信息不完整" message:nil preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleDefault handler:nil];
+        [omitAlert addAction:okAction];
+        [self presentViewController:omitAlert animated:YES completion:nil];
     }
-    NSArray *preNameArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"name"];
-    NSMutableArray *nameArray = [[NSMutableArray alloc] initWithArray:preNameArray];
-    [nameArray addObject:_name.text];
-    NSArray *newNameArray = [[NSArray alloc] initWithArray:nameArray];
-    [[NSUserDefaults standardUserDefaults] setObject:newNameArray forKey:@"name"];
-    
-    //time
-    NSMutableArray *initTimeArray = [[NSMutableArray alloc] init];
-    if([[NSUserDefaults standardUserDefaults] objectForKey:@"time"] == nil) {
-        [[NSUserDefaults standardUserDefaults] setObject:initTimeArray forKey:@"time"];
+    else {
+        //name
+        NSMutableArray *initNameArray = [[NSMutableArray alloc] init];
+        if([[NSUserDefaults standardUserDefaults] objectForKey:@"name"] == nil) {
+            [[NSUserDefaults standardUserDefaults] setObject:initNameArray forKey:@"name"];
+        }
+        NSArray *preNameArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"name"];
+        NSMutableArray *nameArray = [[NSMutableArray alloc] initWithArray:preNameArray];
+        [nameArray insertObject:_name.text atIndex:0];
+        NSArray *newNameArray = [[NSArray alloc] initWithArray:nameArray];
+        [[NSUserDefaults standardUserDefaults] setObject:newNameArray forKey:@"name"];
+        
+        //time
+        NSMutableArray *initTimeArray = [[NSMutableArray alloc] init];
+        if([[NSUserDefaults standardUserDefaults] objectForKey:@"time"] == nil) {
+            [[NSUserDefaults standardUserDefaults] setObject:initTimeArray forKey:@"time"];
+        }
+        NSArray *preTimeArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"time"];
+        NSMutableArray *timeArray = [[NSMutableArray alloc] initWithArray:preTimeArray];
+        [timeArray insertObject:_time.text atIndex:0];
+        NSArray *newTimeArray = [[NSArray alloc] initWithArray:timeArray];
+        [[NSUserDefaults standardUserDefaults] setObject:newTimeArray forKey:@"time"];
+        
+        //number
+        NSMutableArray *initNumberArray = [[NSMutableArray alloc] init];
+        if([[NSUserDefaults standardUserDefaults] objectForKey:@"number"] == nil) {
+            [[NSUserDefaults standardUserDefaults] setObject:initNumberArray forKey:@"number"];
+        }
+        NSArray *preNumberArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"number"];
+        NSMutableArray *numberArray = [[NSMutableArray alloc] initWithArray:preNumberArray];
+        [numberArray insertObject:_number.text atIndex:0];
+        NSArray *newNumberArray = [[NSArray alloc] initWithArray:numberArray];
+        [[NSUserDefaults standardUserDefaults] setObject:newNumberArray forKey:@"number"];
+        
+        //country
+        NSMutableArray *initCountryArray = [[NSMutableArray alloc] init];
+        if([[NSUserDefaults standardUserDefaults] objectForKey:@"country"] == nil) {
+            [[NSUserDefaults standardUserDefaults] setObject:initCountryArray forKey:@"country"];
+        }
+        NSArray *preCountryArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"country"];
+        NSMutableArray *countryArray = [[NSMutableArray alloc] initWithArray:preCountryArray];
+        [countryArray insertObject:_country.text atIndex:0];
+        NSArray *newCountryArray = [[NSArray alloc] initWithArray:countryArray];
+        [[NSUserDefaults standardUserDefaults] setObject:newCountryArray forKey:@"country"];
+        
+        //introduction
+        NSMutableArray *initIntroductionArray = [[NSMutableArray alloc] init];
+        if([[NSUserDefaults standardUserDefaults] objectForKey:@"introduction"] == nil) {
+            [[NSUserDefaults standardUserDefaults] setObject:initIntroductionArray forKey:@"introduction"];
+        }
+        NSArray *preIntroductionArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"introduction"];
+        NSMutableArray *introductionArray = [[NSMutableArray alloc] initWithArray:preIntroductionArray];
+        [introductionArray insertObject:_introduction.text atIndex:0];
+        NSArray *newIntroductionArray = [[NSArray alloc] initWithArray:introductionArray];
+        [[NSUserDefaults standardUserDefaults] setObject:newIntroductionArray forKey:@"introduction"];
+        
+        [self.navigationController popViewControllerAnimated:YES];
     }
-    NSArray *preTimeArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"time"];
-    NSMutableArray *timeArray = [[NSMutableArray alloc] initWithArray:preTimeArray];
-    [timeArray addObject:_time.text];
-    NSArray *newTimeArray = [[NSArray alloc] initWithArray:timeArray];
-    [[NSUserDefaults standardUserDefaults] setObject:newTimeArray forKey:@"time"];
-    
-    //number
-    NSMutableArray *initNumberArray = [[NSMutableArray alloc] init];
-    if([[NSUserDefaults standardUserDefaults] objectForKey:@"number"] == nil) {
-        [[NSUserDefaults standardUserDefaults] setObject:initNumberArray forKey:@"number"];
-    }
-    NSArray *preNumberArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"number"];
-    NSMutableArray *numberArray = [[NSMutableArray alloc] initWithArray:preNumberArray];
-    [numberArray addObject:_number.text];
-    NSArray *newNumberArray = [[NSArray alloc] initWithArray:numberArray];
-    [[NSUserDefaults standardUserDefaults] setObject:newNumberArray forKey:@"number"];
-    
-    //country
-    NSMutableArray *initCountryArray = [[NSMutableArray alloc] init];
-    if([[NSUserDefaults standardUserDefaults] objectForKey:@"country"] == nil) {
-        [[NSUserDefaults standardUserDefaults] setObject:initCountryArray forKey:@"country"];
-    }
-    NSArray *preCountryArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"country"];
-    NSMutableArray *countryArray = [[NSMutableArray alloc] initWithArray:preCountryArray];
-    [countryArray addObject:_country.text];
-    NSArray *newCountryArray = [[NSArray alloc] initWithArray:countryArray];
-    [[NSUserDefaults standardUserDefaults] setObject:newCountryArray forKey:@"country"];
-    
-    //introduction
-    NSMutableArray *initIntroductionArray = [[NSMutableArray alloc] init];
-    if([[NSUserDefaults standardUserDefaults] objectForKey:@"introduction"] == nil) {
-        [[NSUserDefaults standardUserDefaults] setObject:initIntroductionArray forKey:@"introduction"];
-    }
-    NSArray *preIntroductionArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"introduction"];
-    NSMutableArray *introductionArray = [[NSMutableArray alloc] initWithArray:preIntroductionArray];
-    [introductionArray addObject:_introduction.text];
-    NSArray *newIntroductionArray = [[NSArray alloc] initWithArray:introductionArray];
-    [[NSUserDefaults standardUserDefaults] setObject:newIntroductionArray forKey:@"introduction"];
-    
-    [self.navigationController popViewControllerAnimated:YES];
 }
 
 /*

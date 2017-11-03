@@ -12,6 +12,12 @@
 
 @interface TableViewController ()
 
+@property NSArray *nameArray;
+@property NSArray *timeArray;
+@property NSArray *numberArray;
+@property NSArray *countryArray;
+@property NSArray *introductionArray;
+
 @end
 
 @implementation TableViewController
@@ -29,6 +35,17 @@
     self.navigationItem.rightBarButtonItem = addBtn;
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    _nameArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"name"];
+    _timeArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"time"];
+    _numberArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"number"];
+    _countryArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"country"];
+    _introductionArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"introduction"];
+    
+    [self.tableView reloadData];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -37,18 +54,36 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-#warning Incomplete implementation, return the number of sections
-    return 0;
+//#warning Incomplete implementation, return the number of sections
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-#warning Incomplete implementation, return the number of rows
-    return 0;
+//#warning Incomplete implementation, return the number of rows
+    return [_nameArray count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSString *cellID = @"cellID";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellID];
+    }
+    cell.textLabel.text = [_nameArray objectAtIndex:(int)indexPath.row];
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"上映时间：%@ 集数：%@",[_timeArray objectAtIndex:(int)indexPath.row],[_numberArray objectAtIndex:(int)indexPath.row]];
+    return cell;
 }
 
 - (void)didClickAdd {
     AddViewController *addViewCtrl = [[AddViewController alloc] init];
     [self.navigationController pushViewController:addViewCtrl animated:YES];
+}
+
+//点击cell
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    DetailViewController *detailViewCtrl = [[DetailViewController alloc] init];
+    [self.navigationController pushViewController:detailViewCtrl animated:YES];
+    detailViewCtrl.index = indexPath.row;
 }
 /*
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {

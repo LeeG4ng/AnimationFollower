@@ -59,6 +59,7 @@
     return [_nameArray count];
 }
 
+//构造cell
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSString *cellID = @"cellID";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
@@ -66,14 +67,42 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellID];
     }
     cell.textLabel.text = [_nameArray objectAtIndex:(int)indexPath.row];
-//    NSString *time = [[NSString alloc] init];
-//    time = [_timeArray objectAtIndex:(int)indexPath.row];
-//    NSString *number = [_numberArray objectAtIndex:(int)indexPath.row];
-//    NSString *subtitle = [NSString stringWithFormat:@"%@ %@",time,number];
     cell.detailTextLabel.text = [NSString stringWithFormat:@"上映时间：%@ 集数：%@",[_timeArray objectAtIndex:(int)indexPath.row],[_numberArray objectAtIndex:(int)indexPath.row]];
-//    NSLog(@"%@", time);
     return cell;
 }
+
+//滑动删除
+//-(BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+//    return true;
+//}
+//
+//-(NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
+//    return @"删除";
+//}
+//
+//-(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+//    NSMutableArray *preNameArr = [NSMutableArray arrayWithArray:_nameArray];
+//    NSMutableArray *preTimeArr = [NSMutableArray arrayWithArray:_timeArray];
+//    NSMutableArray *preNumberArr = [NSMutableArray arrayWithArray:_numberArray];
+//    NSMutableArray *preCountryArr = [NSMutableArray arrayWithArray:_countryArray];
+//    NSMutableArray *preIntroductionArr = [NSMutableArray arrayWithArray:_introductionArray];
+//    [preNameArr removeObjectAtIndex:indexPath.row];
+//    [preTimeArr removeObjectAtIndex:indexPath.row];
+//    [preNumberArr removeObjectAtIndex:indexPath.row];
+//    [preCountryArr removeObjectAtIndex:indexPath.row];
+//    [preIntroductionArr removeObjectAtIndex:indexPath.row];
+//    NSArray *newNameArr = [NSArray arrayWithArray:preNameArr];
+//    NSArray *newTimeArr = [NSArray arrayWithArray:preTimeArr];
+//    NSArray *newNumberArr = [NSArray arrayWithArray:preNumberArr];
+//    NSArray *newCountryArr = [NSArray arrayWithArray:preCountryArr];
+//    NSArray *newIntroductionArr = [NSArray arrayWithArray:preIntroductionArr];
+//    [[NSUserDefaults standardUserDefaults] setObject:newNameArr forKey:@"name"];
+//    [[NSUserDefaults standardUserDefaults] setObject:newTimeArr forKey:@"time"];
+//    [[NSUserDefaults standardUserDefaults] setObject:newNumberArr forKey:@"number"];
+//    [[NSUserDefaults standardUserDefaults] setObject:newCountryArr forKey:@"country"];
+//    [[NSUserDefaults standardUserDefaults] setObject:newIntroductionArr forKey:@"introduction"];
+//cell未删除
+//}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -85,4 +114,10 @@
     [self.navigationController pushViewController:tableViewCtrl animated:YES];
 }
 
+//点击cell
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    DetailViewController *detailViewCtrl = [[DetailViewController alloc] init];
+    [self.navigationController pushViewController:detailViewCtrl animated:YES];
+    detailViewCtrl.index = indexPath.row;
+}
 @end
