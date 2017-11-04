@@ -8,14 +8,14 @@
 
 #import "AddViewController.h"
 
-@interface AddViewController ()
+@interface AddViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 @property UITextField *name;
 @property UITextField *time;
 @property UITextField *number;
 @property UITextField *country;
 @property UITextField *introduction;
-
+@property UIImageView *imageView;
 
 @end
 
@@ -28,35 +28,43 @@
     self.navigationItem.title = @"新增番剧";
     self.navigationItem.rightBarButtonItem = saveBtn;
     
-    self.name = [[UITextField alloc] initWithFrame:CGRectMake(0, 95, self.view.bounds.size.width, 45)];
+    self.imageView = [[UIImageView alloc] initWithFrame:CGRectMake(40, self.navigationController.navigationBar.frame.size.height+50, self.view.bounds.size.width-80, 210)];
+    [self.view addSubview:self.imageView];
+    self.imageView.backgroundColor = [UIColor greenColor];
+    self.imageView.contentMode = UIViewContentModeScaleAspectFit;
+    self.imageView.userInteractionEnabled = YES;
+    UITapGestureRecognizer *click = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doClickImage)];
+    [self.imageView addGestureRecognizer:click];
+    
+    self.name = [[UITextField alloc] initWithFrame:CGRectMake(0, self.navigationController.navigationBar.frame.size.height+280, self.view.bounds.size.width, 45)];
     [self.view addSubview:_name];
     _name.enabled = YES;
     _name.borderStyle = UITextBorderStyleRoundedRect;
     _name.placeholder = @"番剧名";
     _name.clearButtonMode = UITextFieldViewModeWhileEditing;
     
-    self.time = [[UITextField alloc] initWithFrame:CGRectMake(0, 165, self.view.bounds.size.width, 45)];
+    self.time = [[UITextField alloc] initWithFrame:CGRectMake(0, self.navigationController.navigationBar.frame.size.height+350, self.view.bounds.size.width, 45)];
     [self.view addSubview:_time];
     _time.enabled = YES;
     _time.borderStyle = UITextBorderStyleRoundedRect;
     _time.placeholder = @"上映时间";
     _time.clearButtonMode = UITextFieldViewModeWhileEditing;
     
-    self.number = [[UITextField alloc] initWithFrame:CGRectMake(0, 235, self.view.bounds.size.width, 45)];
+    self.number = [[UITextField alloc] initWithFrame:CGRectMake(0, self.navigationController.navigationBar.frame.size.height+420, self.view.bounds.size.width, 45)];
     [self.view addSubview:_number];
     _number.enabled = YES;
     _number.borderStyle = UITextBorderStyleRoundedRect;
     _number.placeholder = @"集数";
     _number.clearButtonMode = UITextFieldViewModeWhileEditing;
     
-    self.country = [[UITextField alloc] initWithFrame:CGRectMake(0, 305, self.view.bounds.size.width, 45)];
+    self.country = [[UITextField alloc] initWithFrame:CGRectMake(0, self.navigationController.navigationBar.frame.size.height+490, self.view.bounds.size.width, 45)];
     [self.view addSubview:_country];
     _country.enabled = YES;
     _country.borderStyle = UITextBorderStyleRoundedRect;
     _country.placeholder = @"国家";
     _country.clearButtonMode = UITextFieldViewModeWhileEditing;
     
-    self.introduction = [[UITextField alloc] initWithFrame:CGRectMake(0, 375, self.view.bounds.size.width, 45)];
+    self.introduction = [[UITextField alloc] initWithFrame:CGRectMake(0, self.navigationController.navigationBar.frame.size.height+560, self.view.bounds.size.width, 45)];
     [self.view addSubview:_introduction];
     _introduction.enabled = YES;
     _introduction.borderStyle = UITextBorderStyleRoundedRect;
@@ -71,7 +79,7 @@
 }
 
 - (void)didClickSave {
-    if([_name.text  isEqual: @""]||[_time.text  isEqual: @""]||[_number.text  isEqual: @""]||[_country.text  isEqual: @""]||[_introduction.text  isEqual: @""]) {
+    if([_name.text  isEqual: @""]||[_time.text  isEqual: @""]||[_number.text  isEqual: @""]||[_country.text  isEqual: @""]||[_introduction.text  isEqual: @""]||_imageView.image == nil) {
         UIAlertController *omitAlert = [UIAlertController alertControllerWithTitle:@"信息不完整" message:nil preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleDefault handler:nil];
         [omitAlert addAction:okAction];
@@ -133,10 +141,36 @@
         NSArray *newIntroductionArray = [[NSArray alloc] initWithArray:introductionArray];
         [[NSUserDefaults standardUserDefaults] setObject:newIntroductionArray forKey:@"introduction"];
         
+        //imageView
+        NSData *imageData = UIImagePNGRepresentation(_imageView.image);
+        NSMutableArray *initImageArray = [[NSMutableArray alloc] init];
+        if([[NSUserDefaults standardUserDefaults] objectForKey:@"image"] == nil) {
+            [[NSUserDefaults standardUserDefaults] setObject:initImageArray forKey:@"image"];
+        }
+        NSArray *preImageArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"image"];
+        NSMutableArray *imageArray = [NSMutableArray arrayWithArray:preImageArray];
+        [imageArray insertObject:imageData atIndex:0];
+        NSArray *newImageArray = [NSArray arrayWithArray:imageArray];
+        [[NSUserDefaults standardUserDefaults] setObject:newImageArray forKey:@"image"];
+        
         [self.navigationController popViewControllerAnimated:YES];
     }
 }
 
+//选择图片
+- (void)doClickImage {
+//    NSLog(@"click");
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    picker.delegate = self;
+    [self presentViewController:picker animated:YES completion:nil];
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
+    UIImage *photo = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+    self.imageView.image = photo;
+    [picker dismissViewControllerAnimated:YES completion:nil];
+}
 /*
 #pragma mark - Navigation
 
