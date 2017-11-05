@@ -25,7 +25,7 @@
     _tableView.delegate = self;
     _tableView.dataSource = self;
     [self.view addSubview:_tableView];
-    
+
     self.navigationItem.title = @"番剧";
     UIBarButtonItem *tableBtn = [[UIBarButtonItem alloc] initWithTitle:@"追番" style:UIBarButtonItemStylePlain target:self action:@selector(doClickTableBtn)];
     self.navigationItem.rightBarButtonItem = tableBtn;

@@ -31,6 +31,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    self.view.backgroundColor = [UIColor whiteColor];
     _nameArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"name"];
     _timeArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"time"];
     _numberArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"number"];
@@ -40,7 +41,7 @@
     
     self.imageView = [[UIImageView alloc] initWithFrame:CGRectMake(40, self.navigationController.navigationBar.frame.size.height+50, self.view.bounds.size.width-80, 210)];
     [self.view addSubview:self.imageView];
-    self.imageView.backgroundColor = [UIColor greenColor];
+    self.imageView.backgroundColor = [UIColor whiteColor];
     self.imageView.contentMode = UIViewContentModeScaleAspectFit;
     self.imageView.userInteractionEnabled = YES;
     UITapGestureRecognizer *click = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doClickImage)];
